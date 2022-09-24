@@ -1,0 +1,110 @@
+# Metadata for HDB Carpark Information
+---
+Identifier: '1a60dcc1-8c9f-450e-ab6f-6d7a03228bfa'
+Name: 'hdb-carpark-information'
+Title: 'HDB Carpark Information'
+Description: 'Information about HDB carparks such as operating hours, car park location
+  (in SVY21), type of parking system, etc.'
+Topics:
+  - 'Transport'
+Keywords:
+  - 'HDB'
+  - 'Housing'
+  - 'Parking'
+  - 'Private Transport'
+  - 'Property'
+  - 'Public Housing'
+Publisher:
+  Name: 'Housing and Development Board'
+  Admin 1:
+    Name: 'Lim Hui Ying'
+    Department: 'HDB'
+    Email: 'LIM_Hui_Ying@hdb.gov.sg'
+  Admin 2:
+    Name: 'Toh Xue Qin'
+    Department: 'HDB'
+    Email: 'toh_xue_qin@hdb.gov.sg'
+Sources:
+  - 'Housing and Development Board'
+License: 'https://data.gov.sg/open-data-licence'
+Frequency: 'Monthly'
+Coverage: '2020-12-31 to 2022-08-31'
+Last Updated: '2022-09-01T02:09:27.754810'
+Resources:
+  -
+    Identifier: '139a3035-e624-4f56-b63f-89ae28d4ae4c'
+    Title: 'HDB Carpark Information'
+    Url: 'https://storage.data.gov.sg/hdb-carpark-information/resources/hdb-carpark-information-2022-09-01T02-09-27Z.csv'
+    Format: 'CSV'
+    Coverage: '2020-12-31 to 2022-08-31'
+    Description:
+      - 'Information about HDB carparks such as operating hours, car park location
+        (in SVY21), type of parking system, etc.'
+      - ''
+      - 'Note: The Park and Ride Scheme has ceased with effect from 1 Dec 2016'
+    Last Updated: '2022-09-01T02:09:27.029324'
+    Schema:
+      -
+        Name: 'car_park_no'
+        Title: 'Car Park No.'
+        Type: 'text'
+        Sub Type: 'general'
+      -
+        Name: 'address'
+        Title: 'Address'
+        Type: 'text'
+        Sub Type: 'general'
+      -
+        Name: 'x_coord'
+        Title: 'X Coord'
+        Type: 'geo_coordinate'
+        Sub Type: 'x'
+        Coordinate System: 'EPSG:3414'
+      -
+        Name: 'y_coord'
+        Title: 'Y Coord'
+        Type: 'geo_coordinate'
+        Sub Type: 'y'
+        Coordinate System: 'EPSG:3414'
+      -
+        Name: 'car_park_type'
+        Title: 'Car Park Type'
+        Type: 'text'
+        Sub Type: 'general'
+      -
+        Name: 'type_of_parking_system'
+        Title: 'Type Of Parking System'
+        Type: 'text'
+        Sub Type: 'general'
+      -
+        Name: 'short_term_parking'
+        Title: 'Short Term Parking'
+        Type: 'text'
+        Sub Type: 'general'
+      -
+        Name: 'free_parking'
+        Title: 'Free Parking'
+        Type: 'text'
+        Sub Type: 'general'
+      -
+        Name: 'night_parking'
+        Title: 'Night Parking'
+        Type: 'text'
+        Sub Type: 'general'
+      -
+        Name: 'car_park_decks'
+        Title: 'Car park decks'
+        Type: 'numeric'
+        Sub Type: 'general'
+        Unit Of Measure: 'No. of decks'
+      -
+        Name: 'gantry_height'
+        Title: 'Gantry height'
+        Type: 'numeric'
+        Sub Type: 'general'
+        Unit Of Measure: 'Metres'
+      -
+        Name: 'car_park_basement'
+        Title: 'Car park basement'
+        Type: 'text'
+        Sub Type: 'general'
