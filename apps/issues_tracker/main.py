@@ -48,10 +48,11 @@ def fetch_issues_by_project_from_jira(project: str = "KAFKA", max_result: int = 
         max_result (int): The max number to get result data.
         start_at (int): The index to start to fetch data.
     """
-    jira = JIRA(server="https://issues.apache.org/jira/")
+    config_jira = config.get("jira")
+    jira = JIRA(server=config_jira.get("url_base"))
     issues = jira.search_issues(jql_str=f"project = {project} ORDER BY created DESC",
                                 maxResults=max_result,
-                                fields='priority,summary,status,project,created,key,issuetype',
+                                fields=config_jira.get("fields"),
                                 startAt=start_at)
     yield from issues
     if len(issues.iterable) != 0:
@@ -67,16 +68,33 @@ def extract_details_data_jira(issue: Issue) -> dict:
         dict
     """
     result = {
-        "key": issue.key,
+        "key_id": issue.key,
         "summary": issue.fields.summary,
         "priority": issue.fields.priority.raw.get("name"),
         "issue_type": issue.fields.issuetype.raw.get("name"),
         "status": issue.fields.status.raw.get("name"),
         "project": issue.fields.project.raw.get("name"),
         "created": issue.fields.created,
-        "source": "jira"
+        "source_type": "jira"
     }
     return result
+
+
+def get_priority_and_kind_from_labels_gh(issue):
+    """
+    Extract priority & kind from labels
+    Args:
+        issue (GithubIssue): The Issue.
+    Returns:
+        Tuple[str,str]
+    """
+    labels_kind = filter(lambda label: "kind:" in label.name, issue.labels)
+    kinds = list(map(lambda x: x.name, list(labels_kind)))
+    labels_priority = filter(lambda label: "priority:" in label.name, issue.labels)
+    priorities = list(map(lambda x: x.name, list(labels_priority)))
+    priority = priorities[0] if len(priorities) > 0 else "undefined"
+    kind = kinds[0] if len(kinds) > 0 else "undefined"
+    return priority, kind
 
 
 def extract_details_data_github(issue, project) -> dict:
@@ -88,21 +106,16 @@ def extract_details_data_github(issue, project) -> dict:
     Returns:
         dict
     """
-    labels_kind = filter(lambda label: "kind:" in label.name, issue.labels)
-    kinds = list(map(lambda x: x.name, list(labels_kind)))
-    labels_priority = filter(lambda label: "priority:" in label.name, issue.labels)
-    priorities = list(map(lambda x: x.name, list(labels_priority)))
-    priority = priorities[0] if len(priorities) > 0 else "undefined"
-    kind = kinds[0] if len(kinds) > 0 else "undefined"
+    priority, kind = get_priority_and_kind_from_labels_gh(issue)
     result = {
-        "key": f"{issue.id}_{issue.number}",
+        "key_id": f"{issue.id}_{issue.number}",
         "summary": issue.title,
         "priority": priority,
         "issue_type": kind,
         "status": issue.state,
         "project": project,
         "created": issue.created_at,
-        "source": "github"
+        "source_type": "github"
     }
 
     return result
