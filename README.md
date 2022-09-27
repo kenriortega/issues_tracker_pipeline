@@ -1,12 +1,13 @@
-# Carpark Availability project
+# Issues Tracker OSS project
 
 
-### Data engineer carrer
+### Data engineer carrier
 
 
-### Tech used
+### Tech
 
 - apache kafka
-- ksqldb
-- clickhousedb
-- elk
+- ClickHouse
+- Superset
+- python
+- airflow
