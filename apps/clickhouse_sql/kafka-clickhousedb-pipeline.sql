@@ -56,6 +56,5 @@ FROM default.issues_queue;
 
 ATTACH TABLE issues_queue;
 
-SELECT *, topic, partition
-FROM default.issues
-LIMIT 10;
+SELECT *
+FROM default.issues;

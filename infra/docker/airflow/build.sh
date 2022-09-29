@@ -1,0 +1,1 @@
+docker build -t airflow/custom:v0.0.1 .

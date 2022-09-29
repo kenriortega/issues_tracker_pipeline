@@ -4,7 +4,8 @@ import logging
 import sys
 from config import config
 import json
-from confluent_kafka import Producer
+from datetime import datetime
+from kafka import KafkaProducer
 from github import Github
 import os
 from jira import JIRA, Issue
@@ -23,21 +24,14 @@ def delivery_report(err, msg):
         return
 
 
-def send_data_to_kafka(producer: Producer, data: dict):
+def send_data_to_kafka(producer: KafkaProducer, data: dict):
     """
     Sen data to apache kafka.
     Args:
         producer (Producer): The producer object.
         data (dict): The data dict.
     """
-    producer.produce(
-        topic="issues",
-        key=data.get("key"),
-        value=json.dumps(data),
-        on_delivery=delivery_report
-    )
-    print("\nFlushing records...")
-    producer.flush()
+    producer.send(topic="issues", key=data.get("key_id"), value=data, )
 
 
 def fetch_issues_by_project_from_jira(project: str = "KAFKA", max_result: int = 1_000, start_at=0):
@@ -70,11 +64,11 @@ def extract_details_data_jira(issue: Issue) -> dict:
     result = {
         "key_id": issue.key,
         "summary": issue.fields.summary,
-        "priority": issue.fields.priority.raw.get("name"),
-        "issue_type": issue.fields.issuetype.raw.get("name"),
-        "status": issue.fields.status.raw.get("name"),
-        "project": issue.fields.project.raw.get("name"),
-        "created": issue.fields.created,
+        "priority": issue.fields.priority.raw.get("name", "undefined"),
+        "issue_type": issue.fields.issuetype.raw.get("name", "undefined"),
+        "status": issue.fields.status.raw.get("name", "undefined"),
+        "project": issue.fields.project.raw.get("name", "undefined"),
+        "created": issue.fields.created.split(".")[0],
         "source_type": "jira"
     }
     return result
@@ -139,15 +133,19 @@ def fetch_issues_by_project_from_github(project: str):
 def main():
     logging.info("START")
     kafka_config = config.get("kafka")
-    producer = Producer(kafka_config)
+    producer = KafkaProducer(
+        bootstrap_servers=kafka_config.get("bootstrap.servers"),
+        value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+        key_serializer=str.encode
+    )
 
-    for issue in fetch_issues_by_project_from_jira(project="KAFKA"):
+    for issue in fetch_issues_by_project_from_jira(project="BEAM"):
         result = extract_details_data_jira(issue)
         send_data_to_kafka(producer, result)
-
-    for issue in fetch_issues_by_project_from_github(project="apache/airflow"):
-        result = extract_details_data_github(issue, project="apache/airflow")
-        send_data_to_kafka(producer, result)
+    producer.close()
+    # for issue in fetch_issues_by_project_from_github(project="apache/airflow"):
+    #     result = extract_details_data_github(issue, project="apache/airflow")
+    #     send_data_to_kafka(producer, result)
 
 
 if __name__ == "__main__":
