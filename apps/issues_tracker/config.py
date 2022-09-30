@@ -5,6 +5,6 @@ config = {
     },
 
     "kafka": {
-        "bootstrap.servers": "192.168.1.44:9092"
+        "bootstrap.servers": "192.168.1.105:31201   "
     }
 }
