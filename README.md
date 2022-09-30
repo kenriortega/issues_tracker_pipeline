@@ -1,7 +1,9 @@
 # Issues Tracker OSS project
 
 
-### Data engineer carrier
+### Data engineer oss project
+
+![](assets/issues_tracker_oss.jpg)
 
 
 ### Tech
@@ -11,6 +13,7 @@
 - Superset
 - python
 - airflow
+- k8s
 
 
 ### Resource 
