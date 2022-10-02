@@ -47,7 +47,6 @@ with DAG(
         arguments=["echo", "10"],
         labels={"foo": "bar"},
         task_id="dry_run_demo",
-        do_xcom_push=True,
     )
 
     k.dry_run()
