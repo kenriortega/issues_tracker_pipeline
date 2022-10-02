@@ -40,6 +40,7 @@ with DAG(
         tags=['kubernetes_workflow'],
 ) as dag:
     k = KubernetesPodOperator(
+        namespace='playground',
         name="hello-dry-run",
         image="debian",
         cmds=["bash", "-cx"],
