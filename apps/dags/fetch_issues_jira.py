@@ -39,7 +39,7 @@ with DAG(
         start_date=days_ago(1),
         tags=['kubernetes_workflow'],
 ) as dag:
-    k = KubernetesPodOperator(
+    echo = KubernetesPodOperator(
         namespace='playground',
         name="hello-dry-run",
         image="debian",
@@ -49,4 +49,4 @@ with DAG(
         task_id="dry_run_demo",
     )
 
-    k.dry_run()
+    echo
