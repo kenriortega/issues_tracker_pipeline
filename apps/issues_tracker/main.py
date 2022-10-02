@@ -2,13 +2,24 @@
 
 import logging
 import sys
-from config import config
 import json
-from datetime import datetime
+import argparse
 from kafka import KafkaProducer
 from github import Github
 import os
 from jira import JIRA, Issue
+
+# TODO: pass this to env vars
+config = {
+    "jira": {
+        "url_base": "https://issues.apache.org/jira/",
+        "fields": 'priority,summary,status,project,created,key,issuetype',
+    },
+
+    "kafka": {
+        "bootstrap.servers": "192.168.1.105:31201"
+    }
+}
 
 
 def delivery_report(err, msg):
@@ -132,20 +143,43 @@ def fetch_issues_by_project_from_github(project: str):
 
 def main():
     logging.info("START")
+    # Create the parser
+    parser = argparse.ArgumentParser(description='Issues tracker tool')
+    parser.add_argument('Source',
+                        metavar='source',
+                        type=str,
+                        help='the source to fetch all issues')
+    parser.add_argument('Project',
+                        metavar='project',
+                        type=str,
+                        help='the project name for issues collector')
+
+    # Execute the parse_args() method
+    args = parser.parse_args()
+    source_type: str = args.Source
+    project_name: str = args.Project
+
     kafka_config = config.get("kafka")
     producer = KafkaProducer(
-        bootstrap_servers=kafka_config.get("bootstrap.servers"),
+        bootstrap_servers=os.getenv("BOOSTRAP_SERVERS", kafka_config.get("bootstrap.servers")),
         value_serializer=lambda v: json.dumps(v).encode('utf-8'),
         key_serializer=str.encode
     )
+    #
+    if source_type.lower() == "jira":
+        for issue in fetch_issues_by_project_from_jira(project=project_name.upper()):
+            result = extract_details_data_jira(issue)
+            send_data_to_kafka(producer, result)
+            logging.info("Success")
+    elif source_type.lower() == "github":
+        for issue in fetch_issues_by_project_from_github(project=project_name):
+            result = extract_details_data_github(issue, project=project_name)
+            send_data_to_kafka(producer, result)
+            logging.info("Success")
 
-    for issue in fetch_issues_by_project_from_jira(project="BEAM"):
-        result = extract_details_data_jira(issue)
-        send_data_to_kafka(producer, result)
+    else:
+        logging.warning("Source not found")
     producer.close()
-    # for issue in fetch_issues_by_project_from_github(project="apache/airflow"):
-    #     result = extract_details_data_github(issue, project="apache/airflow")
-    #     send_data_to_kafka(producer, result)
 
 
 if __name__ == "__main__":
