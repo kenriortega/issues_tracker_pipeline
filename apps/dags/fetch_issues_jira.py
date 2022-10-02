@@ -44,7 +44,7 @@ with DAG(
         name="hello-dry-run",
         image="debian",
         cmds=["bash", "-cx"],
-        arguments=["echo", "10"],
+        arguments=["echo hello && echo goodbye"],
         labels={"foo": "bar"},
         task_id="dry_run_demo",
     )
