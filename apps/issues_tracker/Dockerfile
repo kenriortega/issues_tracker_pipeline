@@ -11,4 +11,4 @@ COPY main.py main.py
 
 ENV BOOSTRAP_SERVERS=""
 
-ENTRYPOINT ["python","./main.py","-h"]
+ENTRYPOINT ["python","./main.py"]
