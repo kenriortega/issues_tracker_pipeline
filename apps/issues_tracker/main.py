@@ -153,10 +153,14 @@ def main():
                         metavar='project',
                         type=str,
                         help='the project name for issues collector')
-
+    parser.add_argument('Output',
+                        metavar='output',
+                        type=str,
+                        help='the output type console or kafka')
     # Execute the parse_args() method
     args = parser.parse_args()
     source_type: str = args.Source
+    output_type: str = args.Output
     project_name: str = args.Project
 
     kafka_config = config.get("kafka")
@@ -165,17 +169,22 @@ def main():
         value_serializer=lambda v: json.dumps(v).encode('utf-8'),
         key_serializer=str.encode
     )
-    #
     if source_type.lower() == "jira":
         for issue in fetch_issues_by_project_from_jira(project=project_name.upper()):
             result = extract_details_data_jira(issue)
-            send_data_to_kafka(producer, result)
-            logging.info("Success")
+            if output_type.lower() == "kafka":
+                send_data_to_kafka(producer, result)
+                logging.info("Success")
+            else:
+                logging.info(json.dumps(result).encode('utf-8'))
     elif source_type.lower() == "github":
         for issue in fetch_issues_by_project_from_github(project=project_name):
             result = extract_details_data_github(issue, project=project_name)
-            send_data_to_kafka(producer, result)
-            logging.info("Success")
+            if output_type.lower() == "kafka":
+                send_data_to_kafka(producer, result)
+                logging.info("Success")
+            else:
+                logging.info(json.dumps(result).encode('utf-8'))
 
     else:
         logging.warning("Source not found")
