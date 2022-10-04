@@ -162,13 +162,14 @@ def main():
     source_type: str = args.Source
     output_type: str = args.Output
     project_name: str = args.Project
-
-    kafka_config = config.get("kafka")
-    producer = KafkaProducer(
-        bootstrap_servers=os.getenv("BOOSTRAP_SERVERS", kafka_config.get("bootstrap.servers")),
-        value_serializer=lambda v: json.dumps(v).encode('utf-8'),
-        key_serializer=str.encode
-    )
+    producer = None
+    if output_type.lower() == "kafka":
+        kafka_config = config.get("kafka")
+        producer = KafkaProducer(
+            bootstrap_servers=os.getenv("BOOSTRAP_SERVERS", kafka_config.get("bootstrap.servers")),
+            value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+            key_serializer=str.encode
+        )
     if source_type.lower() == "jira":
         for issue in fetch_issues_by_project_from_jira(project=project_name.upper()):
             result = extract_details_data_jira(issue)
