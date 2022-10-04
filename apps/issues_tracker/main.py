@@ -189,7 +189,9 @@ def main():
 
     else:
         logging.warning("Source not found")
-    producer.close()
+
+    if output_type.lower() == "kafka":
+        producer.close()
 
 
 if __name__ == "__main__":
