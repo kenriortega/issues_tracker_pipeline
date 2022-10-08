@@ -17,24 +17,33 @@ default_args = {
     'email_on_retry': False,
     'retries': 1,
     'retry_delay': timedelta(minutes=5),
-
 }
 with DAG(
-        'k8s_pod_op_for_fetch_issues_gh',
+        'k8s_pod_op_for_fetch_issues',
         default_args=default_args,
         description='kubernetes_workflow',
         schedule_interval=timedelta(days=1),
         start_date=days_ago(1),
         tags=['kubernetes_workflow'],
 ) as dag:
-    fetch = KubernetesPodOperator(
+    fetch_gh = KubernetesPodOperator(
+        namespace='playground',
+        name="fetch-github-run",
+        image="kenriortega/issue_tracker:v0.0.1",
+        # cmds=["bash", "-cx"],
+        arguments=["github apache/superset console"],
+        labels={"app": "fetch-github"},
+        task_id="dry_run_fetch_run_gh",
+    )
+
+    fetch_jr = KubernetesPodOperator(
         namespace='playground',
         name="fetch-jira-run",
         image="kenriortega/issue_tracker:v0.0.1",
         # cmds=["bash", "-cx"],
         arguments=["jira superset console"],
         labels={"app": "fetch-jira"},
-        task_id="dry_run_fetch_run",
+        task_id="dry_run_fetch_run_jr",
     )
 
-    fetch
+    [fetch_gh, fetch_jr]
