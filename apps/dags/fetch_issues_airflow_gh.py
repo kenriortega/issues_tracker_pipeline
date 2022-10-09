@@ -39,7 +39,7 @@ with DAG(
         description='kubernetes_workflow',
         schedule_interval=timedelta(days=1),
         start_date=days_ago(1),
-        tags=['kubernetes_workflow'],
+        tags=['k8s', 'gh'],
 ) as dag:
     fetch_gh = KubernetesPodOperator(
         namespace='playground',
