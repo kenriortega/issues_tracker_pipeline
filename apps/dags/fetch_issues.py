@@ -8,6 +8,19 @@ from airflow.utils.dates import days_ago
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
+from airflow.kubernetes.secret import Secret
+
+# [START composer_kubernetespodoperator_secretobject]
+secret_env = Secret(
+    # Expose the secret as environment variable.
+    deploy_type='env',
+    # The name of the environment variable, since deploy_type is `env` rather
+    # than `volume`.
+    deploy_target='GITHUB_TOKEN',
+    # Name of the Kubernetes Secret
+    secret='airflow-gh-token-secret',
+    # Key of a secret stored in this Secret object
+    key='GITHUB_TOKEN')
 
 default_args = {
     'owner': 'airflow',
@@ -34,6 +47,8 @@ with DAG(
         # arguments=["github apache/superset console"],
         labels={"app": "fetch-github"},
         task_id="dry_run_fetch_run_gh",
+        secrets=[secret_env],
+
     )
 
     fetch_jr = KubernetesPodOperator(
