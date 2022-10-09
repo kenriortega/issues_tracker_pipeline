@@ -56,7 +56,7 @@ with DAG(
         env_vars={
             "BOOSTRAP_SERVERS": "kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9091,"
                                 "kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9092,"
-                                "kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9093 "
+                                "kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9093"
         },
         resources=pod_resources
     )
