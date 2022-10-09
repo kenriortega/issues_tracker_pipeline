@@ -30,8 +30,8 @@ with DAG(
         namespace='playground',
         name="fetch-github-run",
         image="kenriortega/issue_tracker:v0.0.1",
-        cmds=["python", "./main.py"],
-        arguments=["github apache/superset console"],
+        cmds=["python", "./main.py", "-h"],
+        # arguments=["github apache/superset console"],
         labels={"app": "fetch-github"},
         task_id="dry_run_fetch_run_gh",
     )
@@ -40,8 +40,8 @@ with DAG(
         namespace='playground',
         name="fetch-jira-run",
         image="kenriortega/issue_tracker:v0.0.1",
-        cmds=["python", "./main.py"],
-        arguments=["jira superset console"],
+        cmds=["python", "./main.py", "-h"],
+        # arguments=["jira superset console"],
         labels={"app": "fetch-jira"},
         task_id="dry_run_fetch_run_jr",
     )
