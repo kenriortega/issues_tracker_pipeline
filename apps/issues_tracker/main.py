@@ -9,30 +9,13 @@ from github import Github
 import os
 from jira import JIRA, Issue
 
-# TODO: pass this to env vars
+
 config = {
     "jira": {
         "url_base": "https://issues.apache.org/jira/",
         "fields": 'priority,summary,status,project,created,key,issuetype',
-    },
-
-    "kafka": {
-        "bootstrap.servers": "192.168.1.105:31201"
     }
 }
-
-
-def delivery_report(err, msg):
-    """
-    Reports the success or failure of a message delivery.
-    Args:
-        err (KafkaError): The error that occurred on None on success.
-        msg (Message): The message that was produced or failed.
-    """
-
-    if err is not None:
-        print("Delivery failed for User record {}: {}".format(msg.key(), err))
-        return
 
 
 def send_data_to_kafka(producer: KafkaProducer, data: dict):
@@ -119,7 +102,7 @@ def extract_details_data_github(issue, project) -> dict:
         "issue_type": kind,
         "status": issue.state,
         "project": project,
-        "created": issue.created_at,
+        "created": f"{issue.created_at}",
         "source_type": "github"
     }
 
@@ -164,9 +147,8 @@ def main():
     project_name: str = args.Project
     producer = None
     if output_type.lower() == "kafka":
-        kafka_config = config.get("kafka")
         producer = KafkaProducer(
-            bootstrap_servers=os.getenv("BOOSTRAP_SERVERS", kafka_config.get("bootstrap.servers")),
+            bootstrap_servers=os.getenv("BOOSTRAP_SERVERS", ""),
             value_serializer=lambda v: json.dumps(v).encode('utf-8'),
             key_serializer=str.encode
         )
@@ -195,5 +177,5 @@ def main():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     sys.exit(main())
