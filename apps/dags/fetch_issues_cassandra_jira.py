@@ -10,7 +10,7 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
 )
 from airflow.kubernetes.secret import Secret
 
-secret_all_keys  = Secret('env', None, 'airflow-gh-token-secret')
+secret_all_keys = Secret('env', None, 'airflow-gh-token-secret')
 env_var_secret = Secret(
     deploy_type='env',
     deploy_target='GITHUB_TOKEN',
@@ -29,21 +29,21 @@ default_args = {
 
 }
 with DAG(
-        'k8s_pod_op_for_fetch_issues_jr',
+        'k8s_pod_op_for_fetch_issues_cassandra_jira',
         default_args=default_args,
         description='kubernetes_workflow',
-        schedule_interval=timedelta(days=1),
+        schedule_interval=timedelta(hours=8),
         start_date=days_ago(1),
         tags=['kubernetes_workflow'],
 ) as dag:
     fetch = KubernetesPodOperator(
         namespace='playground',
-        name="fetch-jira-run",
+        name="fetch-issues-cassandra-jira",
         image="kenriortega/issue_tracker:v0.0.2",
-        cmds=["python", "./main.py", "jira", "superset", "console"],
+        cmds=["python", "./main.py", "jira", "cassandra", "console"],
         # arguments=["jira superset console"],
         labels={"app": "fetch-jira"},
-        task_id="dry_run_fetch_run",
+        task_id="dry_run_fetch_issues_cassandra_jira",
         secrets=[env_var_secret, secret_all_keys],
     )
 

@@ -10,7 +10,7 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
 )
 from airflow.kubernetes.secret import Secret
 
-secret_all_keys  = Secret('env', None, 'airflow-gh-token-secret')
+secret_all_keys = Secret('env', None, 'airflow-gh-token-secret')
 env_var_secret = Secret(
     deploy_type='env',
     deploy_target='GITHUB_TOKEN',
@@ -27,10 +27,10 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 with DAG(
-        'k8s_pod_op_for_fetch_issues_gh',
+        'k8s_pod_op_for_fetch_issues_superset_gh',
         default_args=default_args,
         description='kubernetes_workflow',
-        schedule_interval=timedelta(days=1),
+        schedule_interval=timedelta(hours=8),
         start_date=days_ago(1),
         tags=['kubernetes_workflow'],
 ) as dag:
@@ -41,9 +41,8 @@ with DAG(
         cmds=["python", "./main.py", "github", "apache/superset", "console"],
         # arguments=["github apache/superset console"],
         labels={"app": "fetch-github"},
-        task_id="dry_run_fetch_run",
+        task_id="dry_run_fetch_issues_superset_gh",
         secrets=[env_var_secret, secret_all_keys],
-
     )
 
     fetch_gh

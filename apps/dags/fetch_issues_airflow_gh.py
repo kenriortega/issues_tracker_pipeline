@@ -10,18 +10,13 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
 )
 from airflow.kubernetes.secret import Secret
 
-# [START composer_kubernetespodoperator_secretobject]
-secret_env = Secret(
-    # Expose the secret as environment variable.
+secret_all_keys = Secret('env', None, 'airflow-gh-token-secret')
+env_var_secret = Secret(
     deploy_type='env',
-    # The name of the environment variable, since deploy_type is `env` rather
-    # than `volume`.
     deploy_target='GITHUB_TOKEN',
-    # Name of the Kubernetes Secret
     secret='airflow-gh-token-secret',
-    # Key of a secret stored in this Secret object
-    key='GITHUB_TOKEN')
-
+    key='GITHUB_TOKEN',
+)
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -32,33 +27,23 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 with DAG(
-        'k8s_pod_op_for_fetch_issues',
+        'k8s_pod_op_for_fetch_issues_airflow_gh',
         default_args=default_args,
         description='kubernetes_workflow',
-        schedule_interval=timedelta(days=1),
+        schedule_interval=timedelta(hours=8),
         start_date=days_ago(1),
         tags=['kubernetes_workflow'],
 ) as dag:
     fetch_gh = KubernetesPodOperator(
         namespace='playground',
-        name="fetch-github-run",
+        name="fetch-issues-airflow-gh",
         image="kenriortega/issue_tracker:v0.0.2",
-        cmds=["python", "./main.py", "github", "apache/superset", "console"],
+        cmds=["python", "./main.py", "github", "apache/airflow", "console"],
         # arguments=["github apache/superset console"],
         labels={"app": "fetch-github"},
-        task_id="dry_run_fetch_run_gh",
-        secrets=[secret_env],
+        task_id="dry_run_fetch_issues_airflow_gh",
+        secrets=[env_var_secret, secret_all_keys],
 
     )
 
-    fetch_jr = KubernetesPodOperator(
-        namespace='playground',
-        name="fetch-jira-run",
-        image="kenriortega/issue_tracker:v0.0.2",
-        cmds=["python", "./main.py", "jira", "superset", "console"],
-        # arguments=["jira superset console"],
-        labels={"app": "fetch-jira"},
-        task_id="dry_run_fetch_run_jr",
-    )
-
-    [fetch_gh, fetch_jr]
+    fetch_gh
