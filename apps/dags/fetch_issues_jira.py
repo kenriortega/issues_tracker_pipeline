@@ -31,8 +31,8 @@ with DAG(
         namespace='playground',
         name="fetch-jira-run",
         image="kenriortega/issue_tracker:v0.0.1",
-        cmds=["jira", "superset", "console"],
-        # arguments=["jira superset console"],
+        cmds=[["python", "./main.py"]],
+        arguments=["jira superset console"],
         labels={"app": "fetch-jira"},
         task_id="dry_run_fetch_run",
     )
