@@ -9,6 +9,13 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
 from airflow.kubernetes.secret import Secret
+from airflow.contrib.kubernetes.pod import Resources
+
+pod_resources = Resources()
+pod_resources.request_cpu = '500m'
+pod_resources.request_memory = '1024Mi'
+pod_resources.limit_cpu = '2000m'
+pod_resources.limit_memory = '2048Mi'
 
 secret_all_keys = Secret('env', None, 'airflow-gh-token-secret')
 env_var_secret = Secret(
@@ -43,6 +50,13 @@ with DAG(
         labels={"app": "fetch-github"},
         task_id="dry_run_fetch_issues_superset_gh",
         secrets=[env_var_secret, secret_all_keys],
+        # pass your name as an environment var
+        env_vars={
+            "BOOSTRAP_SERVERS": "kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9091,"
+                                "kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9092,"
+                                "kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9093 "
+        },
+        resources=pod_resources
     )
 
     fetch_gh
