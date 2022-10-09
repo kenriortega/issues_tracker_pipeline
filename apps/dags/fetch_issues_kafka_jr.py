@@ -47,7 +47,7 @@ with DAG(
         namespace='playground',
         name="fetch-issues-kafka-gh",
         image="kenriortega/issue_tracker:v0.0.2",
-        cmds=["python", "./main.py", "jira", "kafka", "console"],
+        cmds=["python", "./main.py", "jira", "kafka", "kafka"],
         # arguments=["jira superset console"],
         labels={"app": "fetch-jira"},
         task_id="dry_run_fetch_issues_kafka_gh",

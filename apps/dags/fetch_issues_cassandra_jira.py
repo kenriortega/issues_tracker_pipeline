@@ -46,7 +46,7 @@ with DAG(
         namespace='playground',
         name="fetch-issues-cassandra-jira",
         image="kenriortega/issue_tracker:v0.0.2",
-        cmds=["python", "./main.py", "jira", "cassandra", "console"],
+        cmds=["python", "./main.py", "jira", "cassandra", "kafka"],
         # arguments=["jira superset console"],
         labels={"app": "fetch-jira"},
         task_id="dry_run_fetch_issues_cassandra_jira",

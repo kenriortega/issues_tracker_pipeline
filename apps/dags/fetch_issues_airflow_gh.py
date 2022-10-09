@@ -45,7 +45,7 @@ with DAG(
         namespace='playground',
         name="fetch-issues-airflow-gh",
         image="kenriortega/issue_tracker:v0.0.2",
-        cmds=["python", "./main.py", "github", "apache/airflow", "console"],
+        cmds=["python", "./main.py", "github", "apache/airflow", "kafka"],
         # arguments=["github apache/superset console"],
         labels={"app": "fetch-github"},
         task_id="dry_run_fetch_issues_airflow_gh",
