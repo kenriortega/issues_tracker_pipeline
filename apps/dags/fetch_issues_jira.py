@@ -8,6 +8,15 @@ from airflow.utils.dates import days_ago
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
+from airflow.kubernetes.secret import Secret
+
+secret_all_keys  = Secret('env', None, 'airflow-gh-token-secret')
+env_var_secret = Secret(
+    deploy_type='env',
+    deploy_target='GITHUB_TOKEN',
+    secret='airflow-gh-token-secret',
+    key='GITHUB_TOKEN',
+)
 
 default_args = {
     'owner': 'airflow',
@@ -32,10 +41,10 @@ with DAG(
         name="fetch-jira-run",
         image="kenriortega/issue_tracker:v0.0.2",
         cmds=["python", "./main.py", "jira", "superset", "console"],
-
         # arguments=["jira superset console"],
         labels={"app": "fetch-jira"},
         task_id="dry_run_fetch_run",
+        secrets=[env_var_secret, secret_all_keys],
     )
 
     fetch

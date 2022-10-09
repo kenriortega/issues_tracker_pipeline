@@ -120,7 +120,7 @@ def fetch_issues_by_project_from_github(project: str):
     token = os.getenv('GITHUB_TOKEN')
     g = Github(token)
     repo = g.get_repo(project)
-    issues = repo.get_issues()
+    issues = repo.get_issues(state='open')
     yield from issues
 
 
