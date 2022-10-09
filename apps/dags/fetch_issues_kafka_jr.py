@@ -39,7 +39,7 @@ with DAG(
         'k8s_pod_op_for_fetch_issues_kafka_gh',
         default_args=default_args,
         description='kubernetes_workflow',
-        schedule_interval=timedelta(hours=8),
+        schedule_interval=timedelta(days=1),
         start_date=days_ago(1),
         tags=['kubernetes_workflow'],
 ) as dag:
