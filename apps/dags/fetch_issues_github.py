@@ -30,8 +30,8 @@ with DAG(
         namespace='playground',
         name="fetch-github-run",
         image="kenriortega/issue_tracker:v0.0.1",
-        # cmds=["bash", "-cx"],
-        arguments=["github apache/superset console"],
+        cmds=["github", "apache/superset", "console"],
+        # arguments=["github apache/superset console"],
         labels={"app": "fetch-github"},
         task_id="dry_run_fetch_run",
     )
