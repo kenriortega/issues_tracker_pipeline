@@ -10,11 +10,12 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
 )
 from airflow.kubernetes.secret import Secret
 from airflow.kubernetes.pod import Resources
+
 pod_resources = Resources()
 pod_resources.request_cpu = '500m'
-pod_resources.request_memory = '1024Mi'
-pod_resources.limit_cpu = '2000m'
-pod_resources.limit_memory = '2048Mi'
+pod_resources.request_memory = '256Mi'
+pod_resources.limit_cpu = '1000m'
+pod_resources.limit_memory = '500Mi'
 
 secret_all_keys = Secret('env', None, 'airflow-gh-token-secret')
 env_var_secret = Secret(
