@@ -30,7 +30,7 @@ with DAG(
     fetch = KubernetesPodOperator(
         namespace='playground',
         name="fetch-jira-run",
-        image="kenriortega/issue_tracker:v0.0.1",
+        image="kenriortega/issue_tracker:v0.0.2",
         cmds=["python", "./main.py", "jira", "superset", "console"],
 
         # arguments=["jira superset console"],

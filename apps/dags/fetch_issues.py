@@ -29,7 +29,7 @@ with DAG(
     fetch_gh = KubernetesPodOperator(
         namespace='playground',
         name="fetch-github-run",
-        image="kenriortega/issue_tracker:v0.0.1",
+        image="kenriortega/issue_tracker:v0.0.2",
         cmds=["python", "./main.py", "github", "apache/superset", "console"],
         # arguments=["github apache/superset console"],
         labels={"app": "fetch-github"},
@@ -39,7 +39,7 @@ with DAG(
     fetch_jr = KubernetesPodOperator(
         namespace='playground',
         name="fetch-jira-run",
-        image="kenriortega/issue_tracker:v0.0.1",
+        image="kenriortega/issue_tracker:v0.0.2",
         cmds=["python", "./main.py", "jira", "superset", "console"],
         # arguments=["jira superset console"],
         labels={"app": "fetch-jira"},
