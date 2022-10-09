@@ -9,7 +9,7 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
 from airflow.kubernetes.secret import Secret
-from airflow.contrib.kubernetes.pod import Resources
+from airflow.kubernetes.pod import Resources
 
 pod_resources = Resources()
 pod_resources.request_cpu = '500m'
