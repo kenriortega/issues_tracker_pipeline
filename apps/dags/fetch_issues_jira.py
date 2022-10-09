@@ -29,7 +29,7 @@ default_args = {
 
 }
 with DAG(
-        'k8s_pod_op_for_fetch_issues_gh',
+        'k8s_pod_op_for_fetch_issues_jr',
         default_args=default_args,
         description='kubernetes_workflow',
         schedule_interval=timedelta(days=1),
