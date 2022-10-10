@@ -8,12 +8,52 @@ resource "kubernetes_namespace" "playground" {
   }
 }
 
+resource "kubernetes_namespace" "data_serving" {
+  metadata {
+    name = "data-serving"
+  }
+}
+
+resource "kubernetes_namespace" "data_ingestion" {
+  metadata {
+    name = "data-ingestion"
+  }
+}
+resource "kubernetes_namespace" "data_processing" {
+  metadata {
+    name = "data-processing"
+  }
+}
+
+
+resource "kubernetes_namespace" "data_viz" {
+  metadata {
+    name = "data-viz"
+  }
+}
+
 
 module "airflow" {
-  source = "./modules/airflow"
+  source    = "./modules/airflow"
+  namespace = data_processing.metadata.name
 }
 
 module "kafka" {
-  source = "./modules/kafka"
+  source    = "./modules/kafka"
+  namespace = data_ingestion.metadata.name
+
 }
 
+
+module "ch" {
+  source    = "./modules/ch"
+  namespace = data_serving.metadata.name
+
+}
+
+
+
+module "superset" {
+  source    = "./modules/superset"
+  namespace = data_viz.metadata.name
+}
