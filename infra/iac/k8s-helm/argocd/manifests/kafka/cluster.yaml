@@ -1,0 +1,80 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: kafka-ingestion
+spec:
+  kafka:
+    version: 3.2.0
+    replicas: 1
+    logging:
+      type: inline
+      loggers:
+        kafka.root.logger.level: "INFO"
+    resources:
+      requests:
+        memory: 2Gi
+        cpu: "1"
+      limits:
+        memory: 2Gi
+        cpu: "2"
+    readinessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    livenessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    jvmOptions:
+      -Xms: 2048m
+      -Xmx: 2048m
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+      - name: kfknp
+        port: 19094
+        type: nodeport
+        tls: false
+    config:
+      auto.create.topics.enable: "true"
+      num.partitions: 1
+      log.retention.hours: 72 # a week
+      offsets.topic.replication.factor: 1
+      transaction.state.log.replication.factor: 1
+      transaction.state.log.min.isr: 1
+      default.replication.factor: 1
+      min.insync.replicas: 1
+      inter.broker.protocol.version: "3.2"
+    storage:
+      type: ephemeral
+    # storage:
+    #     type: persistent-claim
+    #     size: 10Gi
+  zookeeper:
+    replicas: 1
+    logging:
+      type: inline
+      loggers:
+        zookeeper.root.logger: "INFO"
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: "1"
+      limits:
+        memory: 1Gi
+        cpu: "1"
+    jvmOptions:
+      -Xms: 1024m
+      -Xmx: 1024m
+    # storage:
+    #   type: persistent-claim
+    #   size: 5Gi
+    storage:
+      type: ephemeral
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
