@@ -38,3 +38,6 @@ override.tf.json
 # example: *tfplan*
 kube
 .terraform
+apps/tweet_tracker/.env
+.idea/
+.fleet/
