@@ -1,0 +1,45 @@
+apiVersion: beat.k8s.elastic.co/v1beta1
+kind: Beat
+metadata:
+  name: filebeat-kafka-to-elastic-gds
+spec:
+  type: filebeat
+  version: 8.3.3
+  elasticsearchRef:
+    name: elastic-dev
+  configRef:
+    secretName: filebeat-input-kafka-config-gds
+  deployment:
+    podTemplate:
+      spec:
+        dnsPolicy: ClusterFirstWithHostNet
+        securityContext:
+          runAsUser: 0
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: filebeat-input-kafka-config-gds
+stringData:
+  beat.yml: |-
+    filebeat.inputs:
+    - type: kafka
+      hosts: ["kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9091", "kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9092","kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9093"]
+      topics: ['app.filebeat.gds','app.guacho.beat.mongo']
+      group_id: "gds_apps"
+    processors:
+      - decode_json_fields:
+          #document_id: "_id"
+          fields: ["message"]
+    setup.template:
+      name: 'app'
+      pattern: 'app-*'
+      enabled: false
+    setup.ilm.enabled: false
+    output.elasticsearch:
+      bulk_max_size: 1000
+      username: "elastic"
+      password: "nde3LxpTa9zj746ms4534z2o" # todo: research how to change o load dinamicaly
+      index: "%{[kafka.topic]}-%{+yyyy.MM.dd}"
+      non_indexable_policy.dead_letter_index:
+        index: "my-dead-letter-index"

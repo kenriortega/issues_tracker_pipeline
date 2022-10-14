@@ -23,7 +23,7 @@ CREATE TABLE default.issues_queue
     created     DateTime,
     source_type String
 )
-    ENGINE = Kafka('kafka-kafka-1:9092', 'issues', 'clickhouse',
+    ENGINE = Kafka('kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9091,kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9092,kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9093', 'issues', 'clickhouse',
              'JSONEachRow') settings kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
 
 --  Create the materialized view
