@@ -1,3 +1,5 @@
+-- TODO: add partition key by (project)
+-- TODO: add primary key (key_id) -> upsert
 -- Create the destination table
 CREATE TABLE default.issues
 (
@@ -26,6 +28,8 @@ CREATE TABLE default.issues_queue
     ENGINE = Kafka('kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9091,kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9092,kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9093', 'issues', 'clickhouse',
              'JSONEachRow') settings kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
 
+-- TODO create MV for analytic process. (summary)
+-- TODO: check if upsert is here?
 --  Create the materialized view
 CREATE MATERIALIZED VIEW default.issues_mv TO default.issues AS
 SELECT *

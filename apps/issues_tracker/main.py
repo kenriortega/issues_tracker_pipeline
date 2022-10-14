@@ -60,7 +60,7 @@ def extract_details_data_jira(issue: Issue) -> dict:
         "summary": issue.fields.summary,
         "priority": issue.fields.priority.raw.get("name", "undefined"),
         "issue_type": issue.fields.issuetype.raw.get("name", "undefined"),
-        "status": issue.fields.status.raw.get("name", "undefined"),
+        "status": issue.fields.status.raw.get("name", "undefined").capitalize(),
         "project": issue.fields.project.raw.get("name", "undefined"),
         "created": issue.fields.created.split(".")[0],
         "source_type": "jira"
@@ -100,7 +100,7 @@ def extract_details_data_github(issue, project) -> dict:
         "summary": issue.title,
         "priority": priority,
         "issue_type": kind,
-        "status": issue.state,
+        "status": f"{issue.state}".capitalize(),
         "project": project,
         "created": f"{issue.created_at}",
         "source_type": "github"

@@ -43,7 +43,9 @@ with DAG(
         start_date=days_ago(1),
         tags=['k8s', 'jr'],
 ) as dag:
+    # TODO: upgrade docker images
     fetch = KubernetesPodOperator(
+        # change namespace
         namespace='playground',
         name="fetch-issues-kafka-jr",
         image="kenriortega/issue_tracker:v0.0.2",
