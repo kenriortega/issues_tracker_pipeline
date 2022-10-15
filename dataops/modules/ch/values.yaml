@@ -96,11 +96,11 @@ image:
   debug: false
 ## @param shards Number of ClickHouse shards to deploy
 ##
-shards: 2
+shards: 1
 
 ## @param replicaCount Number of ClickHouse replicas per shard to deploy
 ##
-replicaCount: 2
+replicaCount: 1
 ## @param containerPorts.http ClickHouse HTTP container port
 ## @param containerPorts.tcp ClickHouse TCP container port
 ## @param containerPorts.tcpSecure ClickHouse TCP container port
@@ -212,8 +212,8 @@ containerSecurityContext:
 ## @param auth.existingSecretKey Name of the key inside the existing secret
 ##
 auth:
-  username: default
-  password: ""
+  username: demo
+  password: demo
   existingSecret: ""
   existingSecretKey: ""
 
@@ -602,14 +602,14 @@ service:
 externalAccess:
   ## @param externalAccess.enabled Enable Kubernetes external cluster access to ClickHouse
   ##
-  enabled: false
+  enabled: true
   ## Parameters to configure K8s service(s) used to externally access ClickHouse
   ## Note: A new service per  will be created
   ##
   service:
     ## @param externalAccess.service.type Kubernetes Service type for external access. It can be NodePort, LoadBalancer or ClusterIP
     ##
-    type: LoadBalancer
+    type: NodePort
     ## @param externalAccess.service.ports.http ClickHouse service HTTP port
     ## @param externalAccess.service.ports.tcp ClickHouse service TCP port
     ## @param externalAccess.service.ports.tcpSecure ClickHouse service TCP (secure) port
@@ -967,7 +967,7 @@ externalZookeeper:
 ##
 zookeeper:
   enabled: true
-  replicaCount: 2
+  replicaCount: 1
   service:
     ports:
       client: 2181
