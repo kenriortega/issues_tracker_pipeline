@@ -46,7 +46,7 @@ with DAG(
     fetch = KubernetesPodOperator(
         namespace='data-processing',
         name="fetch-issues-cassandra-jira",
-        image="kenriortega/issue_tracker:v0.0.3",
+        image="kenriortega/issue_tracker:v0.0.4",
         cmds=["python", "./main.py", "jira", "cassandra", "kafka"],
         # arguments=["jira superset console"],
         labels={"app": "fetch-jira"},

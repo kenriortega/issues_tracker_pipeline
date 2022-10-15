@@ -10,5 +10,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY main.py main.py
 
 ENV BOOSTRAP_SERVERS=""
+ENV GITHUB_TOKEN=""
 
 ENTRYPOINT ["python","./main.py"]

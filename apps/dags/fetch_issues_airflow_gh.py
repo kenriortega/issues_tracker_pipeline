@@ -44,7 +44,7 @@ with DAG(
     fetch_gh = KubernetesPodOperator(
         namespace='data-processing',
         name="fetch-issues-airflow-gh",
-        image="kenriortega/issue_tracker:v0.0.3",
+        image="kenriortega/issue_tracker:v0.0.4",
         cmds=["python", "./main.py", "github", "apache/airflow", "kafka"],
         # arguments=["github apache/superset console"],
         labels={"app": "fetch-github"},
