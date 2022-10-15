@@ -2,11 +2,10 @@
 import logging
 import os
 import sys
+from pathlib import Path
 import json
-from datetime import datetime
 from dotenv import load_dotenv
 import tweepy
-import pandas as pd
 
 load_dotenv()
 
@@ -14,7 +13,7 @@ load_dotenv()
 # of the Keys and Tokens tab of your app, under the
 # Twitter Developer Portal Projects & Apps page at
 # https://developer.twitter.com/en/portal/projects-and-apps
-bearer_token = os.getenv("BEARER_TOKEN")
+bearer_token = os.getenv("TWITTER_BEARER_TOKEN")
 
 
 def extract_recent_tweets_raw(client: tweepy.Client, arg: str):
@@ -43,17 +42,28 @@ def extract_recent_tweets_raw(client: tweepy.Client, arg: str):
 def save_data_to_file(client: tweepy.Client, ):
     tweets = extract_recent_tweets_raw(
         client,
-        "(@apachekafka OR @ApacheAirflow OR @cassandra OR @apachesuperset)",
+        "(@apachekafka OR @ApacheAirflow OR @cassandra OR @apachesuperset OR @ClickHouseDB)",
     )
-    print(tweets[0:1])
-    df = pd.DataFrame(tweets)
-    df.to_json("./tweet.json", orient='records')
+    return_json = {"return_value": tweets}
+
+    Path("./airflow/xcom").mkdir(parents=True, exist_ok=True)
+    # write to the file checked by Airflow for XComs
+    f = open('./airflow/xcom/return.json', 'w')
+    f.write(f"{json.dumps(return_json)}")
+    f.close()
+
+
+def read_xcom_tweets():
+    with open('./airflow/xcom/return.json', 'r') as f:
+        data = json.load(f)
+
+    print(data)
 
 
 def main():
     # You can authenticate as your app with just your bearer token
     client = tweepy.Client(bearer_token=bearer_token)
-    save_data_to_file()
+    save_data_to_file(client)
 
 
 if __name__ == "__main__":
