@@ -9,7 +9,6 @@ from github import Github
 import os
 from jira import JIRA, Issue
 
-
 config = {
     "jira": {
         "url_base": "https://issues.apache.org/jira/",
@@ -157,17 +156,18 @@ def main():
             result = extract_details_data_jira(issue)
             if output_type.lower() == "kafka":
                 send_data_to_kafka(producer, result)
-                logging.info("Success")
             else:
                 logging.info(json.dumps(result).encode('utf-8'))
+        logging.info("Success")
+
     elif source_type.lower() == "github":
         for issue in fetch_issues_by_project_from_github(project=project_name):
             result = extract_details_data_github(issue, project=project_name)
             if output_type.lower() == "kafka":
                 send_data_to_kafka(producer, result)
-                logging.info("Success")
             else:
                 logging.info(json.dumps(result).encode('utf-8'))
+        logging.info("Success")
 
     else:
         logging.warning("Source not found")
