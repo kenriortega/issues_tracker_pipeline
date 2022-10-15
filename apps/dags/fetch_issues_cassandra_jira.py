@@ -44,7 +44,7 @@ with DAG(
         tags=['k8s', 'jr'],
 ) as dag:
     fetch = KubernetesPodOperator(
-        namespace='playground',
+        namespace='data-processing',
         name="fetch-issues-cassandra-jira",
         image="kenriortega/issue_tracker:v0.0.2",
         cmds=["python", "./main.py", "jira", "cassandra", "kafka"],
@@ -54,9 +54,7 @@ with DAG(
         secrets=[env_var_secret, secret_all_keys],
         # pass your name as an environment var
         env_vars={
-            "BOOSTRAP_SERVERS": "kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9091,"
-                                "kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9092,"
-                                "kfk-ingestion-kafka-bootstrap.kafka-dev.svc:9093"
+            "BOOSTRAP_SERVERS": "kafka-tf-release.data-ingestion.svc:9092"
         },
         resources=pod_resources
     )
