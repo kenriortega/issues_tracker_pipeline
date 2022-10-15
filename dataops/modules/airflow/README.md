@@ -74,7 +74,7 @@ You should take this a step further and set dags.gitSync.knownHosts so you are n
 
 ```bash
 
-kubectl patch svc private-airflow-dev-webserver \
+kubectl  -n data-processing patch svc airflow-tf-release-webserver \
 -p '{"spec":{"ports":[{"port":8080,"targetPort":8080,"name":"https"}],"type":"NodePort"}}'
 ```
 
