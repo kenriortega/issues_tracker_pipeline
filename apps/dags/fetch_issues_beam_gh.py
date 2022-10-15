@@ -24,7 +24,6 @@ env_var_secret = Secret(
     secret='airflow-gh-token-secret',
     key='GITHUB_TOKEN',
 )
-
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -33,25 +32,23 @@ default_args = {
     'email_on_retry': False,
     'retries': 1,
     'retry_delay': timedelta(minutes=5),
-
 }
 with DAG(
-        'k8s_pod_op_for_fetch_issues_kafka_jira',
+        'k8s_pod_op_for_fetch_issues_beam_gh',
         default_args=default_args,
         description='kubernetes_workflow',
         schedule_interval=timedelta(days=1),
         start_date=days_ago(1),
-        tags=['k8s', 'jr'],
+        tags=['k8s', 'gh'],
 ) as dag:
-    # TODO: upgrade docker images
-    fetch = KubernetesPodOperator(
+    fetch_gh = KubernetesPodOperator(
         namespace='data-processing',
-        name="fetch-issues-kafka-jr",
+        name="fetch-github-run",
         image="kenriortega/issue_tracker:v0.0.3",
-        cmds=["python", "./main.py", "jira", "kafka", "kafka"],
-        # arguments=["jira superset console"],
-        labels={"app": "fetch-jira"},
-        task_id="dry_run_fetch_issues_kafka_jr",
+        cmds=["python", "./main.py", "github", "apache/beam", "kafka"],
+        # arguments=["github apache/superset console"],
+        labels={"app": "fetch-github"},
+        task_id="dry_run_fetch_issues_beam_gh",
         secrets=[env_var_secret, secret_all_keys],
         # pass your name as an environment var
         env_vars={
@@ -60,4 +57,4 @@ with DAG(
         resources=pod_resources
     )
 
-    fetch
+    fetch_gh

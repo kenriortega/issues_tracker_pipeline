@@ -41,3 +41,4 @@ kube
 apps/tweet_tracker/.env
 .idea/
 .fleet/
+xcom/

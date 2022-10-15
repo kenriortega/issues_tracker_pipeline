@@ -44,7 +44,7 @@ with DAG(
     fetch_gh = KubernetesPodOperator(
         namespace='data-processing',
         name="fetch-github-run",
-        image="kenriortega/issue_tracker:v0.0.2",
+        image="kenriortega/issue_tracker:v0.0.3",
         cmds=["python", "./main.py", "github", "apache/superset", "kafka"],
         # arguments=["github apache/superset console"],
         labels={"app": "fetch-github"},

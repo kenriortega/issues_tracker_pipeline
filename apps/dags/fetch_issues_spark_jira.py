@@ -36,22 +36,21 @@ default_args = {
 
 }
 with DAG(
-        'k8s_pod_op_for_fetch_issues_kafka_jira',
+        'k8s_pod_op_for_fetch_issues_spark_jira',
         default_args=default_args,
         description='kubernetes_workflow',
         schedule_interval=timedelta(days=1),
         start_date=days_ago(1),
         tags=['k8s', 'jr'],
 ) as dag:
-    # TODO: upgrade docker images
     fetch = KubernetesPodOperator(
         namespace='data-processing',
-        name="fetch-issues-kafka-jr",
+        name="fetch-issues-spark-jira",
         image="kenriortega/issue_tracker:v0.0.3",
-        cmds=["python", "./main.py", "jira", "kafka", "kafka"],
+        cmds=["python", "./main.py", "jira", "spark", "kafka"],
         # arguments=["jira superset console"],
         labels={"app": "fetch-jira"},
-        task_id="dry_run_fetch_issues_kafka_jr",
+        task_id="dry_run_fetch_issues_spark_jira",
         secrets=[env_var_secret, secret_all_keys],
         # pass your name as an environment var
         env_vars={
