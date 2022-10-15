@@ -11,7 +11,9 @@ CREATE TABLE default.issues
     project     String,
     created     DateTime,
     source_type String
-) ENGINE = MergeTree ORDER BY (created);
+) ENGINE = ReplacingMergeTree
+PARTITION BY project
+ORDER BY (created,key_id);
 
 -- Create the Kafka table engine
 CREATE TABLE default.issues_queue

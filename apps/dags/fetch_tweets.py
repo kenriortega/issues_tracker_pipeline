@@ -42,7 +42,7 @@ with DAG(
     fetch_gh = KubernetesPodOperator(
         namespace='data-processing',
         name="fetch-tweets-run",
-        image="kenriortega/tweets_tracker:v0.0.1",
+        image="kenriortega/tweet_tracker:v0.0.1",
         cmds=["python", "./main.py"],
         # arguments=["github apache/superset console"],
         labels={"app": "fetch-tweets"},
