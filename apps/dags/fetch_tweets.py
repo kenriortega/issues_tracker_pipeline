@@ -3,6 +3,7 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.decorators import task
 from airflow.utils.dates import days_ago
+from airflow.operators.bash_operator import BashOperator
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
@@ -64,5 +65,10 @@ with DAG(
             key='return_value')
         print(data)
 
+    t3 = BashOperator(
+        task_id='notifier',
+        bash_command='printf "Completed {{ execution_date.strftime("%d-%m-%Y") }}"',
+        dag=dag,
+    )
 
-    fetch_gh >> load_data()
+    fetch_gh >> load_data() >> t3
