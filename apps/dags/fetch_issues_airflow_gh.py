@@ -41,6 +41,7 @@ with DAG(
         start_date=days_ago(1),
         tags=['k8s', 'gh'],
 ) as dag:
+    print(env_var_secret, secret_all_keys)
     fetch_gh = KubernetesPodOperator(
         namespace='data-processing',
         name="fetch-issues-airflow-gh",
