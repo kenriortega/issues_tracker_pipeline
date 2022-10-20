@@ -59,10 +59,18 @@ with DAG(
         },
         resources=pod_resources
     )
-    t3 = BashOperator(
+    # deduplicate = KubernetesPodOperator(
+    #     name="deduplicate-dry-run",
+    #     image="debian",
+    #     cmds=["bash", "-cx"],
+    #     arguments=["OPTIMIZE TABLE db.table FINAL DEDUPLICATE"],
+    #     labels={"foo": "bar"},
+    #     task_id="dry_run_demo",
+    # )
+    notifier = BashOperator(
         task_id='notifier',
         bash_command='printf "Completed {{ execution_date.strftime("%d-%m-%Y") }}"',
         dag=dag,
     )
 
-    fetch >> t3
+    fetch >> notifier

@@ -43,7 +43,7 @@ with DAG(
 ) as dag:
     fetch_gh = KubernetesPodOperator(
         namespace='data-processing',
-        name="fetch-github-run",
+        name="fetch-issues-clickhouse-gh",
         image="kenriortega/issue_tracker:v0.0.4",
         cmds=["python", "./main.py", "github", "ClickHouse/ClickHouse", "kafka"],
         # arguments=["github apache/superset console"],
