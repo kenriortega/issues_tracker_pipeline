@@ -1058,7 +1058,7 @@ metrics:
   kafka:
     ## @param metrics.kafka.enabled Whether or not to create a standalone Kafka exporter to expose Kafka metrics
     ##
-    enabled: false
+    enabled: true
     ## Bitnami Kafka exporter image
     ## ref: https://hub.docker.com/r/bitnami/kafka-exporter/tags/
     ## @param metrics.kafka.image.registry Kafka exporter image registry
@@ -1294,7 +1294,7 @@ metrics:
   jmx:
     ## @param metrics.jmx.enabled Whether or not to expose JMX metrics to Prometheus
     ##
-    enabled: false
+    enabled: true
     ## Bitnami JMX exporter image
     ## ref: https://hub.docker.com/r/bitnami/jmx-exporter/tags/
     ## @param metrics.jmx.image.registry JMX exporter image registry
