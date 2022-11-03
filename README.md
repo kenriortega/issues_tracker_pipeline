@@ -5,6 +5,7 @@
 
 ![](assets/issues_tracker_oss.jpg)
 
+![](assets/issues-tracker-2022-10-14T15-03-36.448Z.jpg)
 
 ### Tech
 
