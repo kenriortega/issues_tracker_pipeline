@@ -45,14 +45,15 @@ with DAG(
         namespace='data-processing',
         name="fetch-issues-clickhouse-gh",
         image="kenriortega/issue_tracker:v0.0.4",
-        cmds=["python", "./main.py", "github", "ClickHouse/ClickHouse", "kafka"],
+        cmds=["python", "./main.py", "github",
+              "ClickHouse/ClickHouse", "kafka"],
         # arguments=["github apache/superset console"],
         labels={"app": "fetch-github"},
         task_id="dry_run_fetch_issues_clickhouse_gh",
         secrets=[env_var_secret, secret_all_keys],
         # pass your name as an environment var
         env_vars={
-            "BOOSTRAP_SERVERS": "kafka-tf-release.data-ingestion.svc:9092"
+            "BOOSTRAP_SERVERS": "kafka-tf-release.default.svc:9092"
         },
         resources=pod_resources
     )

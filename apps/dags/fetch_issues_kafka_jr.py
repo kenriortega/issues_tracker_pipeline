@@ -55,7 +55,7 @@ with DAG(
         secrets=[env_var_secret, secret_all_keys],
         # pass your name as an environment var
         env_vars={
-            "BOOSTRAP_SERVERS": "kafka-tf-release.data-ingestion.svc:9092"
+            "BOOSTRAP_SERVERS": "kafka-tf-release.default.svc:9092"
         },
         resources=pod_resources
     )
