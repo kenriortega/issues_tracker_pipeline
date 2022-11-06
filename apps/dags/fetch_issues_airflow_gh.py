@@ -43,7 +43,7 @@ with DAG(
 ) as dag:
     print(env_var_secret, secret_all_keys)
     fetch_gh = KubernetesPodOperator(
-        namespace='data-processing',
+        namespace='default',
         name="fetch-issues-airflow-gh",
         image="kenriortega/issue_tracker:v0.0.4",
         cmds=["python", "./main.py", "github", "apache/airflow", "kafka"],

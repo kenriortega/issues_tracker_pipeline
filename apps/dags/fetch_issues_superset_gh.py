@@ -42,7 +42,7 @@ with DAG(
         tags=['k8s', 'gh'],
 ) as dag:
     fetch_gh = KubernetesPodOperator(
-        namespace='data-processing',
+        namespace='default',
         name="fetch-github-run",
         image="kenriortega/issue_tracker:v0.0.4",
         cmds=["python", "./main.py", "github", "apache/superset", "kafka"],

@@ -45,7 +45,7 @@ with DAG(
 ) as dag:
     # TODO: upgrade docker images
     fetch = KubernetesPodOperator(
-        namespace='data-processing',
+        namespace='default',
         name="fetch-issues-kafka-jr",
         image="kenriortega/issue_tracker:v0.0.4",
         cmds=["python", "./main.py", "jira", "kafka", "kafka"],

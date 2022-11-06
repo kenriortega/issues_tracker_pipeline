@@ -42,7 +42,7 @@ with DAG(
         tags=['k8s', 'gh'],
 ) as dag:
     fetch_gh = KubernetesPodOperator(
-        namespace='data-processing',
+        namespace='default',
         name="fetch-issues-clickhouse-gh",
         image="kenriortega/issue_tracker:v0.0.4",
         cmds=["python", "./main.py", "github",

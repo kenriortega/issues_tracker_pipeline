@@ -41,7 +41,7 @@ with DAG(
         tags=['k8s', 'twitter'],
 ) as dag:
     fetch_gh = KubernetesPodOperator(
-        namespace='data-processing',
+        namespace='default',
         name="fetch-tweets-run",
         image="kenriortega/tweet_tracker:v0.0.1",
         cmds=["python", "./main.py"],
@@ -55,7 +55,6 @@ with DAG(
         # file within the Docker container run by the KubernetesPodOperator.
         do_xcom_push=True
     )
-
 
     @task
     def load_data(**context):
