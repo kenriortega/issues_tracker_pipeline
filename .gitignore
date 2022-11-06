@@ -42,3 +42,6 @@ apps/tweet_tracker/.env
 .idea/
 .fleet/
 xcom/
+charts
+secret_airflow.yaml
+secret_twitter.yaml
