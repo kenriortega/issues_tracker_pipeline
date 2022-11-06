@@ -1,0 +1,27 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: data-processing
+  labels:
+    name: data-processing
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: data-ingestion
+  labels:
+    name: data-ingestion
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: data-serving
+  labels:
+    name: data-serving
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: data-viz
+  labels:
+    name: data-viz

@@ -609,7 +609,7 @@ externalAccess:
   service:
     ## @param externalAccess.service.type Kubernetes Service type for external access. It can be NodePort, LoadBalancer or ClusterIP
     ##
-    type: LoadBalancer
+    type: NodePort #LoadBalancer
     ## @param externalAccess.service.ports.http ClickHouse service HTTP port
     ## @param externalAccess.service.ports.tcp ClickHouse service TCP port
     ## @param externalAccess.service.ports.tcpSecure ClickHouse service TCP (secure) port

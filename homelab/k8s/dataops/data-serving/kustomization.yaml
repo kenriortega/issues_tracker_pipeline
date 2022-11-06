@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: data-serving
+# Hay que correr esto antes de empezar para que kustomize encuentre helm
+# export helmCommand=/usr/local/bin/helm
+
+helmCharts:
+  - name: clickhouse
+    repo: https://charts.bitnami.com/bitnami
+    version: 0.2.3
+    releaseName: clickhouse-tf-release
+    valuesFile: clickhouse_values.yaml

@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: data-ingestion
+# Hay que correr esto antes de empezar para que kustomize encuentre helm
+# export helmCommand=/usr/local/bin/helm
+
+helmCharts:
+  - name: kafka
+    repo: https://charts.bitnami.com/bitnami
+    version: 19.0.0
+    releaseName: kafka-tf-release
+    valuesFile: kafka_values.yaml
+    # namespace: data-ingestion

@@ -1,33 +1,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
-# Hay que correr esto antes de empezar para que kustomize encuentre helm
-# export helmCommand=/usr/local/bin/helm
-
-helmCharts:
-  - name: airflow
-    repo: https://airflow.apache.org
-    version: 1.6.0
-    releaseName: airflow-tf-release
-    valuesFile: airflow_values.yaml
-
-  - name: kafka
-    repo: https://charts.bitnami.com/bitnami
-    version: 19.0.0
-    releaseName: kafka-tf-release
-    valuesFile: kafka_values.yaml
-
-  - name: clickhouse
-    repo: https://charts.bitnami.com/bitnami
-    version: 0.2.3
-    releaseName: clickhouse-tf-release
-    valuesFile: clickhouse_values.yaml
-
-  - name: superset
-    repo: https://apache.github.io/superset
-    version: 0.7.4
-    releaseName: superset-tf-release
-    valuesFile: superset_values.yaml
-
 resources:
   - ./base
+  - ./dataops
