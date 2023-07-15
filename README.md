@@ -21,6 +21,7 @@
 
 - [https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/operators.html#howto-operator-kubernetespodoperator](https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/operators.html#howto-operator-kubernetespodoperator)
 - [https://splunktool.com/failed-to-extract-xcom-from-airflow-pod-kubernetes-pod-operator](https://splunktool.com/failed-to-extract-xcom-from-airflow-pod-kubernetes-pod-operator)
+- [https://www.youtube.com/watch?v=XyvTmuAJ4b4&t=1s](https://www.youtube.com/watch?v=XyvTmuAJ4b4&t=1s)
 
 > Tips
 
